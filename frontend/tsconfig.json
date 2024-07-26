@@ -1,0 +1,20 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "firebaseConfig": ["./src/firebaseConfig.ts"]
+    },
+    "noUnusedLocals": true, // 未使用のローカル変数をエラーとして扱う
+    "noUnusedParameters": true // 未使用のパラメータをエラーとして扱う
+  }
+}
