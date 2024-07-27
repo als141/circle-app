@@ -11,6 +11,16 @@ ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle"
 
+# Add these lines to keep environment variables
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
+ARG FIREBASE_PROJECT_ID
+ENV FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID
+ARG FIREBASE_CLIENT_EMAIL
+ENV FIREBASE_CLIENT_EMAIL=$FIREBASE_CLIENT_EMAIL
+ARG FIREBASE_ADMIN_SDK_CREDENTIALS
+ENV FIREBASE_ADMIN_SDK_CREDENTIALS=$FIREBASE_ADMIN_SDK_CREDENTIALS
+
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
@@ -26,9 +36,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+RUN bundle config set --local frozen 'false' && \
+    bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
 # Install Firebase CLI
 RUN npm install -g firebase-tools

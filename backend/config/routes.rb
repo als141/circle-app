@@ -1,4 +1,7 @@
-# config/routes.rb
 Rails.application.routes.draw do
-  post 'rewrite', to: 'rewrite#rewrite'
+  namespace :api do
+    namespace :v1 do
+      post 'rewrite', to: 'rewrite#create'
+    end
+  end
 end

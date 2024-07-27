@@ -177,14 +177,7 @@ const Dashboard: React.FC = () => {
               <PlusCircle className="mr-2 h-4 w-4" />
               新しいイベントを作成
             </Button>
-          </Link>
-        <TextRewriter />
-        <TabsContent value="all">
-          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-            {events.map(event => <EventCard key={event.id} event={event} />)}
-          </div>
-        </TabsContent>
-        
+          </Link>        
         <TabsContent value="all">
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
             {events.map(event => <EventCard key={event.id} event={event} />)}
@@ -200,6 +193,10 @@ const Dashboard: React.FC = () => {
             {events.filter(event => bookmarkedEvents.includes(event.id)).map(event => <EventCard key={event.id} event={event} />)}
           </div>
         </TabsContent>
+        <div className="my-6">
+        <h2 className="text-xl font-semibold mb-4">Text Rewriter Tool</h2>
+        <TextRewriter />
+        </div>
       </Tabs>
 
       <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>

@@ -1,14 +1,15 @@
-require 'firebase-admin'
+require 'firebase-admin-sdk'
 
-if Rails.env.production?
-  # 本番環境では環境変数から直接読み込む
-  credentials = JSON.parse(Base64.decode64(ENV['FIREBASE_CREDENTIALS_BASE64']))
+firebase_credentials = ENV['FIREBASE_ADMIN_SDK_CREDENTIALS']
+if firebase_credentials.nil? || firebase_credentials.empty?
+  Rails.logger.error 'FIREBASE_ADMIN_SDK_CREDENTIALS environment variable is not set or empty'
 else
-  # 開発環境では.envファイルから読み込む
-  credentials = JSON.parse(Base64.decode64(ENV['FIREBASE_CREDENTIALS_BASE64']))
-end
-
-Firebase::Admin.configure do |config|
-  config.project_id = credentials['project_id']
-  config.credentials = Google::Cloud::Firestore::Credentials.new(credentials)
+  begin
+    decoded_credentials = Base64.decode64(firebase_credentials)
+    credentials = StringIO.new(decoded_credentials)
+    Firebase::Admin::Credentials.from_json(credentials)
+    Firebase::Admin.configure
+  rescue => e
+    Rails.logger.error "Failed to initialize Firebase Admin SDK: #{e.message}"
+  end
 end
