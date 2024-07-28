@@ -114,17 +114,23 @@ const Dashboard: React.FC = () => {
         onClick={() => navigate(`/event/${event.id}`)}
       >
         <CardHeader className="flex-grow">
-          <CardTitle className="text-lg font-semibold">{event.name}</CardTitle>
-          <div className="flex items-center justify-between mt-2">
-            {groupName && (
-              <Badge variant="secondary" className="flex items-center px-2 py-1">
-                <Users className="w-4 h-4 mr-1" />
-                <span>{groupName}</span>
-              </Badge>
-            )}
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-lg font-semibold">{event.name}</CardTitle>
             <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); handleBookmark(event.id); }}>
               <Star className={`h-5 w-5 ${bookmarkedEvents.includes(event.id) ? 'fill-yellow-400' : ''}`} />
             </Button>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            {groupName && (
+              <Badge 
+                variant="secondary" 
+                className="flex items-center px-2 py-1 max-w-[calc(100%-40px)] overflow-hidden"
+              >
+                <Users className="w-4 h-4 mr-1 flex-shrink-0" />
+                <span className="truncate">{groupName}</span>
+              </Badge>
+            )}
+            <div className="w-8" /> {/* グループ名がない場合のスペース確保 */}
           </div>
         </CardHeader>
         <CardContent>
@@ -167,7 +173,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="flex justify-start mb-6 overflow-x-auto">
+      <TabsList className="flex justify-start mb-6">
           <TabsTrigger value="all" className="px-4 py-2">全て</TabsTrigger>
           <TabsTrigger value="attending" className="px-4 py-2">出席予定</TabsTrigger>
           <TabsTrigger value="bookmarked" className="px-4 py-2">ブックマーク</TabsTrigger>

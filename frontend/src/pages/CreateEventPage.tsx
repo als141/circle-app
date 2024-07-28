@@ -19,6 +19,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useCircle } from '../CircleContext';
 import { ArrowLeft } from 'lucide-react';
+import MakeEvent from '@/components/api/MakeEvent';
 
 interface Group {
   id: string;
@@ -181,6 +182,10 @@ const CreateEventPage: React.FC = () => {
         </div>
         <Button type="submit">イベントを作成</Button>
       </form>
+      <div className="mt-8 border-t pt-8">
+        <h3 className="text-xl font-semibold mb-4">AIによるイベント提案</h3>
+        <MakeEvent />
+      </div>
 
       <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
         <DialogContent className="sm:max-w-[425px] bg-background">

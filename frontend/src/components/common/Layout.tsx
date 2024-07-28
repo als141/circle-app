@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Home, LogIn, UserPlus, User, LogOut, PlusCircle, ChevronDown } from 'lucide-react';
+import { X, Home, LogIn, UserPlus, User, LogOut, PlusCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
-import { onAuthStateChanged } from 'firebase/auth';
-import { getAuth } from 'firebase/auth';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { db } from '../../firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useCircle } from '../../CircleContext';
+import Header from './Header';
 
 interface Circle {
   id: string;
@@ -75,11 +68,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     });
   };
 
-  const handleCircleChange = (circle: Circle) => {
-    setActiveCircle(circle);
-    navigate('/');
-  };
-
   const navItems = [
     { to: '/', icon: <Home className="mr-3 h-5 w-5" />, label: 'ダッシュボード' },
     { to: '/create-event', icon: <PlusCircle className="mr-3 h-5 w-5" />, label: 'イベント作成', authRequired: true },
@@ -107,8 +95,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* サイドバー（大画面用） */}
-      <div className="hidden md:flex md:flex-col md:w-64 bg-white shadow-lg min-h-screen">
-        <div className="p-4 border-b">
+      <div className="hidden md:flex md:flex-col md:w-64 bg-white shadow-lg">
+        <div className="p-4 h-16 border-b flex items-center">
           <h2 className="text-xl font-semibold">メニュー</h2>
         </div>
         <nav className="flex-1 overflow-y-auto">
@@ -144,7 +132,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="fixed inset-0 z-40 md:hidden">
           <div className="absolute inset-0 bg-gray-600 opacity-75" onClick={toggleSidebar}></div>
           <div className="absolute inset-y-0 left-0 w-64 bg-white shadow-lg z-50">
-            <div className="flex items-center justify-between p-4 border-b">
+            <div className="flex items-center justify-between p-4 h-16 border-b">
               <h2 className="text-xl font-semibold">メニュー</h2>
               <Button variant="ghost" size="icon" onClick={toggleSidebar}>
                 <X className="h-6 w-6" />
@@ -178,46 +166,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {/* メインコンテンツ */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white shadow-md h-20">
-          <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div className="flex items-center">
-              <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden mr-2">
-                <Menu className="h-6 w-6" />
-              </Button>
-              <Link to="/" className="text-2xl font-bold mr-4">サークル管理アプリ</Link>
-              {isLoggedIn && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="ml-2">
-                      {activeCircle ? activeCircle.name : 'サークルを選択'}
-                      <ChevronDown className="ml-2 h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {userCircles.map((circle) => (
-                      <DropdownMenuItem key={circle.id} onSelect={() => handleCircleChange(circle)}>
-                        {circle.name}
-                      </DropdownMenuItem>
-                    ))}
-                    <DropdownMenuItem onSelect={() => navigate('/create-circle')}>
-                      <PlusCircle className="mr-2 h-4 w-4" />
-                      新しいサークルを作成
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-            </div>
-            <Link to={isLoggedIn ? "/mypage" : "/login"}>
-              <div className="flex items-center">
-                {isLoggedIn && <span className="mr-2 text-sm text-green-500">ログイン中</span>}
-                <Avatar>
-                  <AvatarImage src="/api/placeholder/40/40" alt="User" />
-                  <AvatarFallback>{isLoggedIn ? "UN" : "ログイン"}</AvatarFallback>
-                </Avatar>
-              </div>
-            </Link>
-          </div>
-        </header>
+        <Header 
+          isLoggedIn={isLoggedIn}
+          userCircles={userCircles}
+          toggleSidebar={toggleSidebar}
+        />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           <div className="container mx-auto px-4 py-6">
             {children}
