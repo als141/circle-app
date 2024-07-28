@@ -1,0 +1,26 @@
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+/home/als0028/.rbenv/versions/3.3.4/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-yf7cty sitelibdir\=./.gem.20240728-26934-yf7cty clean
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-yf7cty sitelibdir\=./.gem.20240728-26934-yf7cty
+compiling websocket_mask.c
+websocket_mask.c: In function ‘Init_websocket_mask’:
+websocket_mask.c:26:6: warning: old-style function definition [-Wold-style-definition]
+   26 | void Init_websocket_mask()
+      |      ^~~~~~~~~~~~~~~~~~~
+websocket_mask.c: At top level:
+cc1: warning: unrecognized command line option ‘-Wno-self-assign’
+cc1: warning: unrecognized command line option ‘-Wno-parentheses-equality’
+cc1: warning: unrecognized command line option ‘-Wno-constant-logical-operand’
+linking shared-object websocket_mask.so
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-yf7cty sitelibdir\=./.gem.20240728-26934-yf7cty install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20240728-26934-yf7cty
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-yf7cty sitelibdir\=./.gem.20240728-26934-yf7cty clean

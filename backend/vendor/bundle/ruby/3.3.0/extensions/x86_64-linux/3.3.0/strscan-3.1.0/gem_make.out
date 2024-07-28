@@ -1,0 +1,20 @@
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+/home/als0028/.rbenv/versions/3.3.4/bin/ruby extconf.rb
+checking for onig_region_memsize() in ruby.h... yes
+checking for rb_reg_onig_match() in ruby.h... yes
+creating Makefile
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-n6duwu sitelibdir\=./.gem.20240728-26934-n6duwu clean
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-n6duwu sitelibdir\=./.gem.20240728-26934-n6duwu
+compiling strscan.c
+linking shared-object strscan.so
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-n6duwu sitelibdir\=./.gem.20240728-26934-n6duwu install
+/usr/bin/install -c -m 0755 strscan.so ./.gem.20240728-26934-n6duwu
+
+current directory: /home/als0028/CIRCLEAPP/circle-app/backend/vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240728-26934-n6duwu sitelibdir\=./.gem.20240728-26934-n6duwu clean
