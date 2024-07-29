@@ -69,6 +69,12 @@ const CreateEventPage: React.FC = () => {
       return;
     }
 
+    const user = auth.currentUser;
+    if (!user) {
+      setError("ログインしてください。");
+      return;
+    }
+
     try {
       await addDoc(collection(db, 'events'), {
         circleId: activeCircle.id,
@@ -79,7 +85,7 @@ const CreateEventPage: React.FC = () => {
         description: eventDescription,
         groupId: selectedGroup === 'no_group' ? null : selectedGroup,
         attendanceRequired: isAttendanceRequired,
-        createdBy: auth.currentUser?.uid,
+        createdBy: user.uid,
         createdAt: new Date()
       });
 
@@ -102,10 +108,10 @@ const CreateEventPage: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto p-4">
       <div className="flex justify-start mb-4">
-      <Button variant="outline" className="text-sm" onClick={() => navigate(-1)}>
+        <Button variant="outline" className="text-sm" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" />
-      </Button>
-    </div>
+        </Button>
+      </div>
       <h2 className="text-2xl font-bold mb-4">イベント作成</h2>
       <Alert className="mb-4">
         <AlertDescription>現在のアクティブサークル: {activeCircle?.name || 'なし'}</AlertDescription>

@@ -19,7 +19,7 @@ interface Event {
   date: string;
   time: string;
   location: string;
-  group?: string;
+  groupId?: string; // groupをgroupIdに変更
   description: string;
   attendanceRequired: boolean;
 }
@@ -106,8 +106,8 @@ const Dashboard: React.FC = () => {
   };
 
   const EventCard: React.FC<{ event: Event }> = ({ event }) => {
-    const groupName = useGroupName(event.group || null);
-    
+    const groupName = useGroupName(event.groupId || null); // groupをgroupIdに変更
+
     return (
       <Card 
         className="flex flex-col h-full cursor-pointer hover:shadow-md transition-shadow duration-200"
@@ -173,17 +173,17 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <Tabs defaultValue="all" className="w-full">
-      <TabsList className="flex justify-start mb-6">
+        <TabsList className="flex justify-start mb-6">
           <TabsTrigger value="all" className="px-4 py-2">全て</TabsTrigger>
           <TabsTrigger value="attending" className="px-4 py-2">出席予定</TabsTrigger>
           <TabsTrigger value="bookmarked" className="px-4 py-2">ブックマーク</TabsTrigger>
         </TabsList>
-          <Link to="/create-event">
-            <Button variant="outline">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              新しいイベントを作成
-            </Button>
-          </Link>        
+        <Link to="/create-event">
+          <Button variant="outline">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            新しいイベントを作成
+          </Button>
+        </Link>        
         <TabsContent value="all">
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
             {events.map(event => <EventCard key={event.id} event={event} />)}
@@ -200,8 +200,8 @@ const Dashboard: React.FC = () => {
           </div>
         </TabsContent>
         <div className="my-6">
-        <h2 className="text-xl font-semibold mb-4">Text Rewriter Tool</h2>
-        <TextRewriter />
+          <h2 className="text-xl font-semibold mb-4">Text Rewriter Tool</h2>
+          <TextRewriter />
         </div>
       </Tabs>
 

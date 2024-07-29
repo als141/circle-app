@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { X, Home, LogIn, UserPlus, User, LogOut, PlusCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
@@ -20,6 +20,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { activeCircle, setActiveCircle } = useCircle();
   const auth = getAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -72,23 +73,44 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { to: '/', icon: <Home className="mr-3 h-5 w-5" />, label: 'ダッシュボード' },
     { to: '/create-event', icon: <PlusCircle className="mr-3 h-5 w-5" />, label: 'イベント作成', authRequired: true },
     { to: '/join-circle', icon: <UserPlus className="mr-3 h-5 w-5" />, label: 'サークルに参加', authRequired: true },
+    { to: '/create-circle', icon: <PlusCircle className="mr-3 h-5 w-5" />, label: '新しいサークルを作成', authRequired: true },
+    { to: '/login', icon: <LogIn className="mr-3 h-5 w-5" />, label: 'ログイン', authRequired: false },
+    { to: '/register', icon: <UserPlus className="mr-3 h-5 w-5" />, label: '新規登録', authRequired: false },
+    { to: '/mypage', icon: <User className="mr-3 h-5 w-5" />, label: 'マイページ', authRequired: true },
+    { label: 'ログアウト', icon: <LogOut className="mr-3 h-5 w-5" />, onClick: handleLogout, authRequired: true },
   ];
 
   const renderNavItems = () => (
     <>
-      {navItems.map((item, index) => (
-        (!item.authRequired || isLoggedIn) && (
-          <Link 
-            key={index} 
-            to={item.to} 
-            className={`flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 ${location.pathname === item.to ? 'bg-gray-100' : ''}`}
-            onClick={toggleSidebar}
-          >
-            {item.icon}
-            {item.label}
-          </Link>
-        )
-      ))}
+      {navItems.map((item, index) => {
+        if ((item.authRequired && isLoggedIn) || (!item.authRequired && !isLoggedIn)) {
+          if (item.to) {
+            return (
+              <Link
+                key={index}
+                to={item.to}
+                className={`flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 ${location.pathname === item.to ? 'bg-gray-100' : ''}`}
+                onClick={toggleSidebar}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
+            );
+          } else if (item.onClick) {
+            return (
+              <button
+                key={index}
+                onClick={item.onClick}
+                className="flex items-center w-full px-4 py-2 text-left text-gray-600 hover:bg-gray-100"
+              >
+                {item.icon}
+                {item.label}
+              </button>
+            );
+          }
+        }
+        return null;
+      })}
     </>
   );
 
@@ -101,29 +123,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           {renderNavItems()}
-          {!isLoggedIn ? (
-            <>
-              <Link to="/login" className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100">
-                <LogIn className="mr-3 h-5 w-5" />
-                ログイン
-              </Link>
-              <Link to="/register" className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100">
-                <UserPlus className="mr-3 h-5 w-5" />
-                新規登録
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/mypage" className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100">
-                <User className="mr-3 h-5 w-5" />
-                マイページ
-              </Link>
-              <button onClick={handleLogout} className="flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100">
-                <LogOut className="mr-3 h-5 w-5" />
-                ログアウト
-              </button>
-            </>
-          )}
         </nav>
       </div>
 
@@ -140,25 +139,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
             <nav className="mt-5">
               {renderNavItems()}
-              {!isLoggedIn ? (
-                <>
-                  <Link to="/login" className="block px-4 py-2 text-gray-600 hover:bg-gray-100" onClick={toggleSidebar}>
-                    ログイン
-                  </Link>
-                  <Link to="/register" className="block px-4 py-2 text-gray-600 hover:bg-gray-100" onClick={toggleSidebar}>
-                    新規登録
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/mypage" className="block px-4 py-2 text-gray-600 hover:bg-gray-100" onClick={toggleSidebar}>
-                    マイページ
-                  </Link>
-                  <button onClick={handleLogout} className="block w-full px-4 py-2 text-left text-gray-600 hover:bg-gray-100">
-                    ログアウト
-                  </button>
-                </>
-              )}
             </nav>
           </div>
         </div>
