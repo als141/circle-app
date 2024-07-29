@@ -118,7 +118,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="flex h-screen bg-gray-100">
       {/* サイドバー（大画面用） */}
       <div className="hidden md:flex md:flex-col md:w-64 bg-white shadow-lg">
-        <div className="p-4 h-16 border-b flex items-center">
+        <div className="p-4 h-20 border-b flex items-center">
           <h2 className="text-xl font-semibold">メニュー</h2>
         </div>
         <nav className="flex-1 overflow-y-auto">
@@ -131,7 +131,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="fixed inset-0 z-40 md:hidden">
           <div className="absolute inset-0 bg-gray-600 opacity-75" onClick={toggleSidebar}></div>
           <div className="absolute inset-y-0 left-0 w-64 bg-white shadow-lg z-50">
-            <div className="flex items-center justify-between p-4 h-16 border-b">
+            <div className="flex items-center justify-between p-4 h-20 border-b">
               <h2 className="text-xl font-semibold">メニュー</h2>
               <Button variant="ghost" size="icon" onClick={toggleSidebar}>
                 <X className="h-6 w-6" />

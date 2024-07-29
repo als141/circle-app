@@ -86,19 +86,6 @@ const EventDetailsPage: React.FC = () => {
   
     checkUserRole();
   }, [user, activeCircle, event]);
-
-  const handleDelete = async () => {
-    if (!eventId) return;
-    try {
-      await deleteDoc(doc(db, 'events', eventId));
-      setDialogMessage('イベントが削除されました。');
-      setIsDialogOpen(true);
-      setTimeout(() => navigate('/'), 2000);
-    } catch (err) {
-      console.error("Error deleting event:", err);
-      setError('イベントの削除中にエラーが発生しました');
-    }
-  };
   
   const handleEdit = () => {
     navigate(`/edit-event/${eventId}`);
@@ -163,6 +150,10 @@ const EventDetailsPage: React.FC = () => {
     }
   };
 
+  const handleDelete = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
   const memoizedGroupName = useMemo(() => {
     return event ? groupName : null;
   }, [event, groupName]);
@@ -178,14 +169,14 @@ const EventDetailsPage: React.FC = () => {
         </Button>
         {isUserMember && (
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBookmark}
-            className="flex items-center"
-          >
-            <Star className={`h-5 w-5 mr-1 ${isBookmarked ? 'fill-yellow-400' : ''}`} />
-            {isBookmarked ? "ブックマーク済" : "ブックマーク"}
-          </Button>
+          variant="outline" // 変更: variantをoutlineに
+          size="sm"
+          onClick={handleBookmark}
+          className="flex items-center"
+        >
+          <Star className={`h-5 w-5 mr-1 ${isBookmarked ? 'fill-yellow-400' : ''}`} />
+          {isBookmarked ? "ブックマーク済" : "ブックマーク"}
+        </Button>
         )}
       </div>
       {event && (
@@ -266,27 +257,39 @@ const EventDetailsPage: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-  
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
+            <DialogHeader>
+                <DialogTitle>削除完了</DialogTitle>
+                <DialogDescription>{dialogMessage}</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+                <Button variant="outline" onClick={() => setIsDialogOpen(false)}>閉じる</Button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
+  
+    <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <DialogContent>
           <DialogHeader>
-            <DialogTitle>イベント削除の確認</DialogTitle>
-            <DialogDescription>
-              本当にこのイベントを削除しますか？この操作は取り消せません。
-            </DialogDescription>
+              <DialogTitle>イベント削除の確認</DialogTitle>
+              <DialogDescription>
+                  本当にこのイベントを削除しますか？この操作は取り消せません。
+              </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <h3 className="font-semibold mb-2">{event?.name}</h3>
-            <p><Calendar className="inline mr-2" />{event?.date}</p>
-            <p><Clock className="inline mr-2" />{event?.time}</p>
-            <p><MapPin className="inline mr-2" />{event?.location}</p>
-            <p className="mt-2">{event?.description}</p>
+              <h3 className="font-semibold mb-2">{event?.name}</h3>
+              <p><Calendar className="inline mr-2" />{event?.date}</p>
+              <p><Clock className="inline mr-2" />{event?.time}</p>
+              <p><MapPin className="inline mr-2" />{event?.location}</p>
+              <p className="mt-2">{event?.description}</p>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>キャンセル</Button>
-            <Button variant="destructive" onClick={confirmDelete}>削除</Button>
+              <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>キャンセル</Button>
+              <Button variant="destructive" onClick={confirmDelete}>削除</Button>
           </DialogFooter>
-        </DialogContent>
+      </DialogContent>
       </Dialog>
     </div>
   );
