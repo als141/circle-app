@@ -19,6 +19,7 @@ import MyEventsPage from './pages/MyEventsPage';
 import EditEventPage from './pages/EditEventPage';
 import EventDetailsPage from './pages/event/EventDetailsPage';
 import EditProfilePage from './pages/EditProfilePage';
+import LineCallback from './components/auth/LineCallback';
 
 const App: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ const App: React.FC = () => {
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/line-callback" element={<LineCallback />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />

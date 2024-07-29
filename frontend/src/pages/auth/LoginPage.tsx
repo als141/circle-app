@@ -21,10 +21,22 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const handleLineLogin = () => {
+    const lineLoginUrl = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${import.meta.env.REACT_APP_LINE_CHANNEL_ID}&redirect_uri=${encodeURIComponent(import.meta.env.REACT_APP_LINE_CALLBACK_URL)}&state=${generateRandomState()}&scope=profile%20openid%20email`;
+    window.location.href = lineLoginUrl;
+  };
+  
+  const generateRandomState = () => {
+    return Math.random().toString(36).substring(2, 15);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow">
         <h2 className="text-2xl font-bold text-center">ログイン</h2>
+        <button onClick={handleLineLogin} className="w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600">
+          LINEでログイン
+        </button>
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">メールアドレス</label>
